@@ -1,6 +1,5 @@
 package br.com.rrv.screenmatch.principal;
 
-import br.com.rrv.screenmatch.dtos.EpisodioDto;
 import br.com.rrv.screenmatch.dtos.SerieDto;
 import br.com.rrv.screenmatch.dtos.TemporadaDto;
 import br.com.rrv.screenmatch.services.ConsumoApi;
@@ -25,7 +24,7 @@ public class Principal {
         var nomeSerie = URLEncoder.encode(scanner.nextLine(), StandardCharsets.UTF_8);
 
         urlApi = String.format("%s%s%s", URL_API, nomeSerie, API_KEY);
-        
+
         consumoApi = new ConsumoApi();
 
         var jsonResponse = consumoApi.obterDados(urlApi);
@@ -48,14 +47,10 @@ public class Principal {
         System.out.println("\nLista de temporadas:");
         temporadasDto.forEach(System.out::println);
 
-        for (int i = 0; i < serieDto.totalTemporadas(); i++) {
-            List<EpisodioDto> episodiosDto = temporadasDto.get(i).episodiosDto();
-
-            System.out.println("\nTemporada: " + temporadasDto.get(i).numero());
-            for (EpisodioDto episodioDto : episodiosDto) {
-                System.out.println(episodioDto.titulo());
-            }
-        }
+        temporadasDto.forEach(temporadaDto -> {
+            System.out.println("\nTemporada: " + temporadaDto.numero());
+            temporadaDto.episodiosDto().forEach(episodioDto -> System.out.println(episodioDto.titulo()));
+        });
 
         scanner.close();
     }
