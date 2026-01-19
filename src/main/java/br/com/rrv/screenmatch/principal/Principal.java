@@ -1,5 +1,6 @@
 package br.com.rrv.screenmatch.principal;
 
+import br.com.rrv.screenmatch.dtos.EpisodioDto;
 import br.com.rrv.screenmatch.dtos.SerieDto;
 import br.com.rrv.screenmatch.dtos.TemporadaDto;
 import br.com.rrv.screenmatch.services.ConsumoApi;
