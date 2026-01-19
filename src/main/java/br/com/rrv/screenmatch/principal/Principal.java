@@ -3,6 +3,7 @@ package br.com.rrv.screenmatch.principal;
 import br.com.rrv.screenmatch.dtos.EpisodioDto;
 import br.com.rrv.screenmatch.dtos.SerieDto;
 import br.com.rrv.screenmatch.dtos.TemporadaDto;
+import br.com.rrv.screenmatch.entities.Episodio;
 import br.com.rrv.screenmatch.services.ConsumoApi;
 import br.com.rrv.screenmatch.services.ConverteDados;
 
@@ -65,6 +66,12 @@ public class Principal {
                 .sorted(Comparator.comparing(EpisodioDto::avaliacao).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadasDto
+                .stream()
+                .flatMap(t -> t.episodiosDto()
+                        .stream()
+                        .map(e -> new Episodio(e.numero(), e))).toList();
 
         scanner.close();
     }
