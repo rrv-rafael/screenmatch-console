@@ -9,6 +9,7 @@ import br.com.rrv.screenmatch.services.ConverteDados;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class Principal {
         var nomeSerie = URLEncoder.encode(scanner.nextLine(), StandardCharsets.UTF_8);
 
         urlApi = String.format("%s%s%s", URL_API, nomeSerie, API_KEY);
-        
+
         consumoApi = new ConsumoApi();
 
         var jsonResponse = consumoApi.obterDados(urlApi);
@@ -56,6 +57,18 @@ public class Principal {
                 System.out.println(episodioDto.titulo());
             }
         }
+
+        List<EpisodioDto> episodiosDto = temporadasDto
+                .stream()
+                .flatMap(t -> t.episodiosDto().stream()).toList();
+
+        System.out.println("\nTop 5 episódios:");
+        episodiosDto
+                .stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("n/a"))
+                .sorted(Comparator.comparing(EpisodioDto::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
 
         scanner.close();
     }
