@@ -57,7 +57,8 @@ public class Principal {
 
         List<EpisodioDto> episodiosDto = temporadasDto
                 .stream()
-                .flatMap(t -> t.episodiosDto().stream()).toList();
+                .flatMap(t -> t.episodiosDto().stream())
+                .toList();
 
         System.out.println("\nTop 5 episódios:");
         episodiosDto
@@ -71,7 +72,10 @@ public class Principal {
                 .stream()
                 .flatMap(t -> t.episodiosDto()
                         .stream()
-                        .map(e -> new Episodio(e.numero(), e))).toList();
+                        .map(e -> new Episodio(e.numero(), e)))
+                .toList();
+
+        episodios.forEach(System.out::println);
 
         scanner.close();
     }
