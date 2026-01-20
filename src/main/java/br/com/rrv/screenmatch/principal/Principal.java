@@ -9,6 +9,8 @@ import br.com.rrv.screenmatch.services.ConverteDados;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -77,6 +79,19 @@ public class Principal {
 
         episodios.forEach(System.out::println);
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        System.out.print("A partir de que ano vc deseja ver os episódios? ");
+        var ano = scanner.nextInt();
+
+        scanner.nextLine();
+
+        LocalDate dataDesejada = LocalDate.of(ano, 1, 1);
+
+        episodios.stream()
+                .filter(e -> e.getDataLancamento().isAfter(dataDesejada))
+                .forEach(System.out::println);
+        
         scanner.close();
     }
 }
