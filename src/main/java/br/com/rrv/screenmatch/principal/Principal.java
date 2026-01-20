@@ -72,7 +72,7 @@ public class Principal {
                 .stream()
                 .flatMap(t -> t.episodiosDto()
                         .stream()
-                        .map(e -> new Episodio(e.numero(), e)))
+                        .map(e -> new Episodio(t.numero(), e)))
                 .toList();
 
         episodios.forEach(System.out::println);
