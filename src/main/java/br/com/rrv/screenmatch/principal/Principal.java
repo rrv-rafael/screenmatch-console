@@ -89,9 +89,12 @@ public class Principal {
         LocalDate dataDesejada = LocalDate.of(ano, 1, 1);
 
         episodios.stream()
-                .filter(e -> e.getDataLancamento().isAfter(dataDesejada))
-                .forEach(System.out::println);
-        
+                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataDesejada))
+                .forEach(e -> System.out.printf(
+                        "Temporada: %d Episódio: %s Data de lançamento: %s%n",
+                        e.getTemporada(), e.getTitulo(), e.getDataLancamento().format(dateTimeFormatter))
+                );
+
         scanner.close();
     }
 }
