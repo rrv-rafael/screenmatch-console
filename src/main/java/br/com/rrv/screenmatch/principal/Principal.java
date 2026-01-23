@@ -11,10 +11,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
     private final Scanner scanner = new Scanner(System.in);
@@ -83,6 +80,16 @@ public class Principal {
                 .toList();
 
         episodios.forEach(System.out::println);
+
+        System.out.print("Informe o trecho do título desejado: ");
+        var trechoTitulo = scanner.nextLine();
+
+        episodios.stream()
+                .filter(e -> e.getTitulo().toLowerCase(Locale.ROOT).contains(trechoTitulo.toLowerCase(Locale.ROOT)))
+                .findFirst()
+                .ifPresentOrElse(e -> System.out.println("Episódio encontrado.\n" + "Temporada: " + e.getTitulo()),
+                        () -> System.out.println("Episódio não encontrado!")
+                );
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
