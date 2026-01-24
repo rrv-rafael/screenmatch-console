@@ -12,16 +12,21 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
     private final Scanner scanner = new Scanner(System.in);
-    private String urlApi;
-    private final String URL_API = "https://omdbapi.com/?t=";
-    private final String API_KEY = "&apikey=b8662a59";
-    private ConsumoApi consumoApi = new ConsumoApi();
-    private ConverteDados converteDados = new ConverteDados();
+
 
     public void exibirMenu() {
+        String urlApi;
+
+        final String URL_API = "https://omdbapi.com/?t=";
+        final String API_KEY = "&apikey=b8662a59";
+
+        ConsumoApi consumoApi = new ConsumoApi();
+        ConverteDados converteDados = new ConverteDados();
+
         System.out.print("Digite o nome da série que deseja buscar: ");
         var nomeSerie = URLEncoder.encode(scanner.nextLine(), StandardCharsets.UTF_8);
 
@@ -106,6 +111,21 @@ public class Principal {
                         "Temporada: %d Episódio: %s Data de lançamento: %s%n",
                         e.getTemporada(), e.getTitulo(), e.getDataLancamento().format(dateTimeFormatter))
                 );
+
+        Map<Integer, Double> mediaTemporadas = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getAvaliacao)));
+
+        System.out.println("\nMédia das avaliações por temporada:\n" + mediaTemporadas);
+
+        DoubleSummaryStatistics statistics = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+
+        System.out.println("\nMédia: " + statistics.getAverage());
+        System.out.println("Melhor avaliação: " + statistics.getMax());
+        System.out.println("Pior avaliação: " + statistics.getMin());
+        System.out.println("Quantidade de episódios avaliados: " + statistics.getCount());
 
         scanner.close();
     }
